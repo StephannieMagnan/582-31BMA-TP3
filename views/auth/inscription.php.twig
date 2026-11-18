@@ -1,0 +1,29 @@
+{#
+    Inscription publique d'un client (route /inscription).
+    Le privilège « Client » est ajouté par le contrôleur, pas par le formulaire.
+#}
+{% extends 'layout.php.twig' %}
+
+{% block titre %}Créer un compte{% endblock %}
+
+{% block contenu %}
+    <div class="en-tete-page">
+        <h1>Créer un compte</h1>
+        <p class="texte-discret">Un compte client donne accès aux pages des auteurs, des éditeurs et des catégories.</p>
+    </div>
+
+    {% if erreurs is not empty %}
+        <p class="message message--erreur" role="alert">Le compte n'a pas été créé. Corrigez les champs indiqués.</p>
+    {% endif %}
+
+    <form class="formulaire formulaire--etroit" method="post" action="{{ base }}/inscription" novalidate>
+        <input type="hidden" name="jeton_csrf" value="{{ jeton_csrf }}">
+
+        {% include 'partials/champs-utilisateur.php.twig' %}
+
+        <div class="formulaire__actions">
+            <button type="submit" class="bouton">Créer mon compte</button>
+            <a href="{{ base }}/login">J'ai déjà un compte</a>
+        </div>
+    </form>
+{% endblock %}

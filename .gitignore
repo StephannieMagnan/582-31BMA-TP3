@@ -1,0 +1,12 @@
+# Fichier de configuration avec le vrai mot de passe : jamais publié
+config/config.php
+
+# Rapport Word (remis seulement dans le ZIP)
+*.docx
+~$*.docx
+
+# Images téléversées par l'administrateur : ce sont des données, pas du code.
+# On garde seulement le dossier et sa protection.
+uploads/couvertures/*
+!uploads/couvertures/.htaccess
+!uploads/couvertures/.gitkeep

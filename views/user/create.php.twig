@@ -1,0 +1,44 @@
+{#
+    Ajout d'un utilisateur par l'administrateur (route /user/create).
+    L'administrateur choisit le privilège : Admin ou Client.
+#}
+{% extends 'layout.php.twig' %}
+{% import 'partials/formulaire.php.twig' as champ %}
+
+{% block titre %}Ajouter un utilisateur{% endblock %}
+
+{% block contenu %}
+    <p class="fil"><a href="{{ base }}/admin">Administration</a> / <a href="{{ base }}/users">Utilisateurs</a> / Ajouter</p>
+
+    <div class="en-tete-page">
+        <h1>Ajouter un utilisateur</h1>
+    </div>
+
+    {% if erreurs is not empty %}
+        <p class="message message--erreur" role="alert">L'utilisateur n'a pas été enregistré. Corrigez les champs indiqués.</p>
+    {% endif %}
+
+    <form class="formulaire formulaire--etroit" method="post" action="{{ base }}/user/create" novalidate>
+        <input type="hidden" name="jeton_csrf" value="{{ jeton_csrf }}">
+
+        {% include 'partials/champs-utilisateur.php.twig' %}
+
+        <div class="champ champ--court">
+            <label for="privilege_id">Privilège</label>
+            <select id="privilege_id" name="privilege_id" required{{ champ.attributs(erreurs, 'privilege_id') }}>
+                <option value="">Choisir un privilège</option>
+                {% for privilege in privileges %}
+                    <option value="{{ privilege.id }}" {% if privilege.id == user.privilege_id|default('') %}selected{% endif %}>
+                        {{ privilege.privilege }}
+                    </option>
+                {% endfor %}
+            </select>
+            {{ champ.erreur(erreurs, 'privilege_id') }}
+        </div>
+
+        <div class="formulaire__actions">
+            <button type="submit" class="bouton">Ajouter l'utilisateur</button>
+            <a href="{{ base }}/users">Annuler</a>
+        </div>
+    </form>
+{% endblock %}

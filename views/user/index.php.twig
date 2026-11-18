@@ -1,0 +1,55 @@
+{#
+    Liste des utilisateurs (administrateur seulement).
+    Le mot de passe haché n'est jamais affiché.
+#}
+{% extends 'layout.php.twig' %}
+
+{% block titre %}Utilisateurs{% endblock %}
+
+{% block contenu %}
+    <p class="fil"><a href="{{ base }}/admin">Administration</a> / Utilisateurs</p>
+
+    <div class="en-tete-page">
+        <h1>Utilisateurs</h1>
+        <a class="bouton" href="{{ base }}/user/create">Ajouter un utilisateur</a>
+    </div>
+
+    <div class="tableau-conteneur">
+        <table class="tableau">
+            <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Nom d'utilisateur</th>
+                    <th scope="col">Courriel</th>
+                    <th scope="col">Privilège</th>
+                    <th scope="col">Inscription</th>
+                    <th scope="col"><span class="visuellement-cache">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td><strong>{{ user.name }}</strong></td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <span class="pastille {{ user.privilege_id == 1 ? 'pastille--admin' : 'pastille--client' }}">{{ user.privilege }}</span>
+                        </td>
+                        <td>{{ user.created_at|date('Y-m-d') }}</td>
+                        <td class="actions">
+                            {% if user.id == session.user_id %}
+                                <span class="texte-discret">Votre compte</span>
+                            {% else %}
+                                {% include 'partials/supprimer.php.twig' with {
+                                    action: '/user/delete',
+                                    id: user.id,
+                                    confirmation: 'Supprimer le compte de ' ~ user.name ~ '?'
+                                } %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

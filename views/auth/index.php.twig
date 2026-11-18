@@ -1,0 +1,40 @@
+{#
+    Formulaire de connexion (route /login).
+#}
+{% extends 'layout.php.twig' %}
+{% import 'partials/formulaire.php.twig' as champ %}
+
+{% block titre %}Connexion{% endblock %}
+
+{% block contenu %}
+    <div class="en-tete-page">
+        <h1>Connexion</h1>
+    </div>
+
+    {% if erreurs.message is defined %}
+        <p class="message message--erreur" role="alert">{{ erreurs.message }}</p>
+    {% endif %}
+
+    <form class="formulaire formulaire--etroit" method="post" action="{{ base }}/login" novalidate>
+        <input type="hidden" name="jeton_csrf" value="{{ jeton_csrf }}">
+
+        <div class="champ">
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" id="username" name="username" maxlength="50" required autocomplete="username"
+                   value="{{ user.username|default('') }}"{{ champ.attributs(erreurs|default([]), 'username') }}>
+            {{ champ.erreur(erreurs|default([]), 'username') }}
+        </div>
+
+        <div class="champ">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" maxlength="72" required autocomplete="current-password"
+                   {{- champ.attributs(erreurs|default([]), 'password') }}>
+            {{ champ.erreur(erreurs|default([]), 'password') }}
+        </div>
+
+        <div class="formulaire__actions">
+            <button type="submit" class="bouton">Se connecter</button>
+            <a href="{{ base }}/inscription">Créer un compte client</a>
+        </div>
+    </form>
+{% endblock %}

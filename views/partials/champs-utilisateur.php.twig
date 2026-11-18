@@ -1,0 +1,35 @@
+{#
+    Champs communs à l'inscription d'un client et à l'ajout d'un utilisateur (admin).
+    Variables attendues : user, erreurs
+#}
+{% import 'partials/formulaire.php.twig' as champ %}
+
+<div class="champ">
+    <label for="name">Nom complet</label>
+    <input type="text" id="name" name="name" maxlength="50" required autocomplete="name"
+           value="{{ user.name|default('') }}"{{ champ.attributs(erreurs, 'name') }}>
+    {{ champ.erreur(erreurs, 'name') }}
+</div>
+
+<div class="rangee">
+    <div class="champ">
+        <label for="username">Nom d'utilisateur</label>
+        <input type="text" id="username" name="username" maxlength="50" required autocomplete="username"
+               value="{{ user.username|default('') }}"{{ champ.attributs(erreurs, 'username') }}>
+        {{ champ.erreur(erreurs, 'username') }}
+    </div>
+
+    <div class="champ">
+        <label for="email">Courriel</label>
+        <input type="email" id="email" name="email" maxlength="100" required autocomplete="email"
+               value="{{ user.email|default('') }}"{{ champ.attributs(erreurs, 'email') }}>
+        {{ champ.erreur(erreurs, 'email') }}
+    </div>
+</div>
+
+<div class="champ">
+    <label for="password">Mot de passe <span class="facultatif">(8 caractères ou plus)</span></label>
+    <input type="password" id="password" name="password" minlength="8" maxlength="72" required autocomplete="new-password"
+           {{- champ.attributs(erreurs, 'password') }}>
+    {{ champ.erreur(erreurs, 'password') }}
+</div>

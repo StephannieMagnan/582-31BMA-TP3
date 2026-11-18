@@ -1,0 +1,7 @@
+# Ce dossier contient seulement des images téléversées.
+# Aucun script ne doit pouvoir y être exécuté ni listé.
+Options -Indexes
+
+<FilesMatch "\.(php|phtml|phar|pl|py|cgi|sh)$">
+    Require all denied
+</FilesMatch>

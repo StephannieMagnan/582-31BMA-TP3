@@ -1,0 +1,73 @@
+{#
+    Mon compte : informations de la personne connectée et ses dernières visites.
+#}
+{% extends 'layout.php.twig' %}
+
+{% block titre %}Mon compte{% endblock %}
+
+{% block contenu %}
+    <div class="en-tete-page">
+        <h1>Mon compte</h1>
+    </div>
+
+    <dl class="fiche__donnees fiche__donnees--compte">
+        <div>
+            <dt>Nom</dt>
+            <dd>{{ compte.name }}</dd>
+        </div>
+        <div>
+            <dt>Nom d'utilisateur</dt>
+            <dd>{{ compte.username }}</dd>
+        </div>
+        <div>
+            <dt>Courriel</dt>
+            <dd>{{ compte.email }}</dd>
+        </div>
+        <div>
+            <dt>Membre depuis</dt>
+            <dd>{{ compte.created_at|date('Y-m-d') }}</dd>
+        </div>
+    </dl>
+
+    <section class="section">
+        <h2>Explorer</h2>
+        <ul class="portes">
+            <li>
+                <h3><a href="{{ base }}/livres">Le catalogue</a></h3>
+                <p>Tous les livres de Nemesis, avec recherche par titre, auteur ou catégorie.</p>
+            </li>
+            <li>
+                <h3><a href="{{ base }}/auteurs">Les auteurs</a></h3>
+                <p>Leur biographie et le nombre de leurs livres au catalogue.</p>
+            </li>
+            <li>
+                <h3><a href="{{ base }}/categories">Les catégories</a></h3>
+                <p>Horreur, gothique, vampires, poésie : trouvez votre prochaine lecture.</p>
+            </li>
+        </ul>
+    </section>
+
+    {% if visites is not empty %}
+        <section class="section">
+            <h2>Mes dernières pages visitées</h2>
+            <div class="tableau-conteneur">
+                <table class="tableau tableau--compact">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date et heure</th>
+                            <th scope="col">Page</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for visite in visites %}
+                            <tr>
+                                <td class="horodatage">{{ visite.date_visite|date('Y-m-d H:i') }}</td>
+                                <td><code>{{ visite.page }}</code></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

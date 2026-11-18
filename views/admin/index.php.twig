@@ -1,0 +1,78 @@
+{#
+    Tableau de bord de l'interface administrateur.
+#}
+{% extends 'layout.php.twig' %}
+
+{% block titre %}Administration{% endblock %}
+
+{% block contenu %}
+    <div class="en-tete-page">
+        <h1>Administration</h1>
+        <a class="bouton" href="{{ base }}/livre/create">Ajouter un livre</a>
+    </div>
+
+    <dl class="statistiques">
+        <div>
+            <dt>Titres au catalogue</dt>
+            <dd>{{ nombreLivres }}</dd>
+        </div>
+        <div>
+            <dt>Livres à réapprovisionner</dt>
+            <dd>{{ stockFaible }}</dd>
+        </div>
+        <div>
+            <dt>Utilisateurs</dt>
+            <dd>{{ nombreUsers }}</dd>
+        </div>
+        <div>
+            <dt>Visites aujourd'hui</dt>
+            <dd>{{ statistiques.aujourdhui|default(0) }}</dd>
+        </div>
+    </dl>
+
+    <section class="section">
+        <h2>Gérer le contenu</h2>
+
+        <ul class="portes">
+            <li>
+                <h3><a href="{{ base }}/livres">Livres</a></h3>
+                <p>Ajouter un livre et sa couverture, modifier une fiche ou retirer un titre du catalogue.</p>
+                <a class="bouton bouton--clair" href="{{ base }}/livre/create">Ajouter un livre</a>
+            </li>
+            <li>
+                <h3><a href="{{ base }}/auteurs">Auteurs</a></h3>
+                <p>{{ nombreAuteurs }} auteurs. Un auteur qui a encore des livres ne peut pas être supprimé.</p>
+                <a class="bouton bouton--clair" href="{{ base }}/auteur/create">Ajouter un auteur</a>
+            </li>
+            <li>
+                <h3><a href="{{ base }}/editeurs">Éditeurs</a></h3>
+                <p>Les maisons d'édition. Si un éditeur disparaît, ses livres restent au catalogue.</p>
+                <a class="bouton bouton--clair" href="{{ base }}/editeur/create">Ajouter un éditeur</a>
+            </li>
+            <li>
+                <h3><a href="{{ base }}/categories">Catégories</a></h3>
+                <p>Les genres qui classent les livres : horreur, gothique, vampires et plus encore.</p>
+                <a class="bouton bouton--clair" href="{{ base }}/categorie/create">Ajouter une catégorie</a>
+            </li>
+        </ul>
+    </section>
+
+    <section class="section">
+        <h2>Suivi</h2>
+
+        <ul class="portes">
+            <li>
+                <h3><a href="{{ base }}/livres/inventaire">Inventaire</a></h3>
+                <p>La valeur des rayons, les derniers arrivages et les livres presque épuisés.</p>
+            </li>
+            <li>
+                <h3><a href="{{ base }}/users">Utilisateurs</a></h3>
+                <p>Les comptes clients et administrateurs. Créer un compte et choisir son privilège.</p>
+            </li>
+            <li>
+                <h3><a href="{{ base }}/journal">Journal de bord</a></h3>
+                <p>{{ statistiques.total|default(0) }} pages visitées, depuis {{ statistiques.adresses|default(0) }} adresses IP différentes.</p>
+            </li>
+        </ul>
+    </section>
+{% endblock %}

@@ -1,0 +1,76 @@
+{#
+    Journal de bord : dernières pages visitées (administrateur seulement).
+#}
+{% extends 'layout.php.twig' %}
+
+{% block titre %}Journal de bord{% endblock %}
+
+{% block contenu %}
+    <div class="en-tete-page">
+        <h1>Journal de bord</h1>
+        <p class="texte-discret">Les 200 visites les plus récentes.</p>
+    </div>
+
+    <dl class="statistiques">
+        <div>
+            <dt>Pages visitées</dt>
+            <dd>{{ statistiques.total|default(0) }}</dd>
+        </div>
+        <div>
+            <dt>Aujourd'hui</dt>
+            <dd>{{ statistiques.aujourdhui|default(0) }}</dd>
+        </div>
+        <div>
+            <dt>Adresses IP différentes</dt>
+            <dd>{{ statistiques.adresses|default(0) }}</dd>
+        </div>
+        <div>
+            <dt>Visites de membres</dt>
+            <dd>{{ statistiques.membres|default(0) }}</dd>
+        </div>
+    </dl>
+
+    <nav class="onglets" aria-label="Filtrer le journal">
+        {% for cle, libelle in { 'tous': 'Toutes les visites', 'visiteurs': 'Visiteurs', 'membres': 'Membres connectés' } %}
+            <a href="{{ base }}/journal?type={{ cle }}" {% if cle == type %}aria-current="page"{% endif %}>{{ libelle }}</a>
+        {% endfor %}
+    </nav>
+
+    {% if visites is empty %}
+        <div class="vide">
+            <p>Aucune visite à afficher.</p>
+        </div>
+    {% else %}
+        <div class="tableau-conteneur">
+            <table class="tableau tableau--compact">
+                <thead>
+                    <tr>
+                        <th scope="col">Date et heure</th>
+                        <th scope="col">Utilisateur</th>
+                        <th scope="col">Adresse IP</th>
+                        <th scope="col">Page visitée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for visite in visites %}
+                        <tr>
+                            <td class="horodatage">{{ visite.date_visite|date('Y-m-d H:i:s') }}</td>
+                            <td>
+                                {% if visite.utilisateur == 'Visiteur' %}
+                                    <span class="texte-discret">Visiteur</span>
+                                {% else %}
+                                    <strong>{{ visite.utilisateur }}</strong>
+                                {% endif %}
+                            </td>
+                            <td class="horodatage">{{ visite.adresse_ip }}</td>
+                            <td>
+                                {% if visite.methode != 'GET' %}<span class="pastille pastille--methode">{{ visite.methode }}</span>{% endif %}
+                                <code>{{ visite.page }}</code>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}
